@@ -1,0 +1,783 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timbre AES - Confédération des États du Sahel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #87ceeb 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* En-tête */
+        .navbar-header {
+            background-color: #1e3c72;
+            color: white;
+            padding: 10px;
+            position: relative;
+            height: 50px;
+        }
+
+        /* Bouton menu */
+        .menu-toggle {
+            background-color: transparent;
+            border: none;
+            font-size: 1.5rem;
+            color: white;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        /* Menu latéral */
+        .nav-menu {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #1e3c72;
+            color: white;
+            overflow-y: auto;
+            transition: left 0.3s ease;
+            padding-top: 60px;
+            z-index: 1000;
+        }
+
+        .nav-menu.show {
+            left: 0;
+        }
+
+        .nav-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-menu li {
+            padding: 12px 20px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            text-decoration: underline;
+            background: rgba(255, 215, 0, 0.2);
+            padding: 8px 15px;
+            border-radius: 8px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease-out;
+            padding-top: 20px;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 3rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        .section {
+            margin-bottom: 60px;
+            scroll-margin-top: 100px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .stamp-showcase {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            animation: slideInLeft 1s ease-out;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stamp-showcase:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+        }
+
+        .stamp-visual {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #87ceeb 0%, #4682b4 100%);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border: 8px solid #ffd700;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+
+        .stamp-content {
+            text-align: center;
+            color: white;
+            z-index: 2;
+        }
+
+        .aes-logo {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        .stamp-details {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            animation: slideInRight 1s ease-out;
+        }
+
+        .about-section {
+            margin-bottom: 30px;
+        }
+
+        .about-section h2 {
+            color: #1e3c72;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .about-section h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 30px;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            border-radius: 2px;
+        }
+
+        .description {
+            line-height: 1.8;
+            color: #555;
+            text-align: justify;
+            margin-bottom: 20px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #1e3c72;
+            transition: transform 0.3s ease;
+        }
+
+        .detail-item:hover {
+            transform: translateX(5px);
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #1e3c72;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            color: #333;
+            font-size: 1rem;
+        }
+
+        .highlight {
+            color: #d4af37;
+            font-weight: 700;
+        }
+
+        .contact-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 1s ease-out;
+            text-align: center;
+        }
+
+        .contact-section h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #555;
+            transition: color 0.3s ease;
+        }
+
+        .contact-item:hover {
+            color: #1e3c72;
+        }
+
+        .contact-item a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-item a:hover {
+            color: #ffd700;
+            text-decoration: underline;
+        }
+
+        .icon {
+            font-size: 1.5rem;
+        }
+
+        /* QR Code Section */
+        .qr-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+            animation-delay: 0.5s;
+        }
+
+        .qr-section h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+        }
+
+        .qr-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .qr-code {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border: 3px solid #ffd700;
+        }
+
+        .qr-description {
+            color: #666;
+            font-style: italic;
+            max-width: 400px;
+        }
+
+        .canvas-wrapper {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        canvas {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+        }
+
+        .download-btn {
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .download-btn:hover {
+            background-color: #1e40af;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(30, 60, 114, 0.3);
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-star {
+            position: absolute;
+            color: rgba(255, 215, 0, 0.3);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Éléments flottants -->
+    <div class="floating-elements">
+        <div class="floating-star" style="top: 10%; left: 10%; font-size: 2rem;">★</div>
+        <div class="floating-star" style="top: 20%; right: 15%; font-size: 1.5rem; animation-delay: -2s;">✦</div>
+        <div class="floating-star" style="bottom: 30%; left: 20%; font-size: 1.8rem; animation-delay: -4s;">★</div>
+        <div class="floating-star" style="bottom: 20%; right: 10%; font-size: 2.2rem; animation-delay: -1s;">✦</div>
+    </div>
+
+    <!-- Header avec menu -->
+    <header class="navbar-header">
+        <button class="menu-toggle" onclick="toggleMenu()">☰ Menu</button>
+        <nav class="nav-menu" id="navMenu">
+            <ul>
+                <li><a href="#accueil">🏠 Accueil</a></li>
+                <li><a href="#timbre">🎯 Le Timbre</a></li>
+                <li><a href="#details">📋 Détails</a></li>
+                <li><a href="#contact">📞 Contact</a></li>
+                <li><a href="#qrcode">📱 QR Code</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Section Accueil -->
+        <header id="accueil" class="header section">
+            <h1>Timbre Commémoratif AES</h1>
+            <p class="subtitle">Confédération des États du Sahel - An I</p>
+        </header>
+
+        <!-- Section Timbre -->
+        <section id="timbre" class="section">
+            <div class="main-content">
+                <div class="stamp-showcase">
+                    <div class="stamp-visual" onclick="zoomStamp()">
+                        <div class="stamp-content">
+                            <div class="aes-logo">
+                                <img src="images/image4.jpg" alt="Logo AES" style="width: 230px; height: 150px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; color: #1e3c72; font-weight: bold; font-size: 1.1rem;">
+                        Valeur faciale: <span class="highlight">1 500 F CFA</span>
+                    </div>
+                </div>
+
+                <div class="stamp-details">
+                    <div class="about-section">
+                        <h2>À propos de ce timbre</h2>
+                        <p class="description">
+                            Mission de patrouille des <strong>Forces de Défense et de Sécurité (FDS)</strong> ainsi que des <strong>Volontaires pour la Défense de la Patrie</strong> (VDP), résolument engagées sur le théâtre des opérations pour la reconquête du territoire national. En effet, ce timbre traduit la nécessité de l’union des forces combattantes dans le contexte de défis sécuritaire.
+                        </p>
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Détails -->
+        <section id="details" class="section">
+            <div class="stamp-details">
+                <div class="about-section">
+                    <h2>Détails du timbre</h2>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">Émetteur</span>
+                            <span class="detail-value">Burkina Faso</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Thème</span>
+                            <span class="detail-value">Reconquête du territoire </span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Nom</span>
+                            <span class="detail-value">Forces combattantes</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Unité</span>
+                            <span class="detail-value">Corps habillés et civils</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Elément burkinabè</span>
+                            <span class="detail-value">Zone d’insécurité et drapeau du pays </span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Total émis</span>
+                            <span class="detail-value">50 000</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Date de sortie</span>
+                            <span class="detail-value">2025</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">ID public</span>
+                            <span class="detail-value">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Contact -->
+        <section id="contact" class="section">
+            <div class="contact-section">
+                <h2>À propos de nous</h2>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span class="icon">🌐</span>
+                        <a href="https://www.laposte.bf" target="_blank">www.laposte.bf</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="icon">📘</span>
+                        <span>La Poste Burkina Faso</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="icon">📞</span>
+                        <a href="tel:+22603986060">(+226) 03 98 60 60</a> / <a href="tel:+22625306420">(+226) 25 30 64 20</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="icon">🔗</span>
+                        <a href="https://www.expovirtuellelaposte.bf" target="_blank">www.expovirtuellelaposte.bf</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section QR Code -->
+        <section id="qrcode" class="section">
+            <div class="qr-section">
+                <h2>QR Code du Timbre</h2>
+                <div class="qr-container">
+                    <div class="canvas-wrapper">
+                        <canvas id="qrCanvas" width="300" height="300"></canvas>
+                    </div>
+                    <button class="download-btn" id="downloadBtn">⬇ Télécharger le QR Code</button>
+                    <p class="qr-description">
+                        Scannez ce QR code pour découvrir les détails du Timbre commémoratif AES.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script>
+        // Gestion du menu
+        function toggleMenu() {
+            const menu = document.getElementById("navMenu");
+            menu.classList.toggle("show");
+        }
+
+        // Ferme le menu si on clique hors de celui-ci
+        function closeMenu(event) {
+            const menu = document.getElementById("navMenu");
+            const button = document.querySelector('.menu-toggle');
+            
+            // Si le menu est ouvert et que le clic ne vient pas du menu ni du bouton
+            if (menu.classList.contains("show") &&
+                !menu.contains(event.target) &&
+                !button.contains(event.target)) {
+                menu.classList.remove("show");
+            }
+        }
+
+        // Ferme le menu sur tout clic en dehors
+        document.addEventListener("click", closeMenu);
+        
+        // Ferme aussi le menu sur touch (pour les appareils tactiles)
+        document.addEventListener("touchstart", closeMenu);
+
+        // Navigation fluide
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    
+                    // Fermer le menu après navigation
+                    const menu = document.getElementById("navMenu");
+                    menu.classList.remove("show");
+                    
+                    // Animation sur le lien cliqué
+                    link.style.background = '#ffd700';
+                    link.style.color = '#1e3c72';
+                    setTimeout(() => {
+                        link.style.background = '';
+                        link.style.color = '';
+                    }, 500);
+                }
+            });
+        });
+
+        // Génération du QR Code
+        const canvas = document.getElementById("qrCanvas");
+        const downloadBtn = document.getElementById("downloadBtn");
+
+        const data = `TIMBRE COMMEMORATIF AES
+Confédération des États du Sahel - An I
+
+DÉTAILS:
+- Émetteur: Burkina Faso
+- Valeur: 1 500 F CFA
+- Date: 2025
+- Total émis: 50 000 
+
+CONTACT:
+Web: www.laposte.bf
+Tél: (+226) 03 98 60 60
+Expo: www.expovirtuellelaposte.bf`;
+
+        // Génération du QR Code au chargement
+        window.addEventListener('load', () => {
+            QRCode.toCanvas(canvas, data, {
+                width: 300,
+                margin: 2,
+                color: {
+                    dark: "#1e40af",
+                    light: "#ffffff"
+                }
+            }, function (error) {
+                if (error) console.error("Erreur de génération du QR Code :", error);
+            });
+        });
+
+        // Téléchargement du QR Code
+        downloadBtn.addEventListener("click", () => {
+            const link = document.createElement("a");
+            link.download = "timbre-aes-qrcode.png";
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        });
+
+        // Zoom sur le timbre
+        function zoomStamp() {
+            const stamp = document.querySelector('.stamp-visual');
+            stamp.style.transform = 'scale(1.05) rotate(2deg)';
+            setTimeout(() => {
+                stamp.style.transform = 'scale(1) rotate(0deg)';
+            }, 300);
+        }
+
+        // Effet de parallaxe sur les étoiles flottantes
+        document.addEventListener('mousemove', (e) => {
+            const stars = document.querySelectorAll('.floating-star');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            stars.forEach((star, index) => {
+                const speed = (index + 1) * 0.5;
+                const xPos = (x - 0.5) * speed * 50;
+                const yPos = (y - 0.5) * speed * 50;
+                star.style.transform = `translate(${xPos}px, ${yPos}px) rotate(${xPos}deg)`;
+            });
+        });
+
+        // Animation de survol sur les détails
+        document.querySelectorAll('.detail-item').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                item.style.background = 'linear-gradient(135deg, #e3f2fd, #bbdefb)';
+                item.style.borderLeftColor = '#ffd700';
+            });
+            
+            item.addEventListener('mouseleave', () => {
+                item.style.background = 'linear-gradient(135deg, #f8f9fa, #e9ecef)';
+                item.style.borderLeftColor = '#1e3c72';
+            });
+        });
+
+        // Mise en surbrillance de la section active dans la navigation
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section');
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.style.background = 'rgba(255, 215, 0, 0.2)';
+                } else {
+                    link.style.background = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
